@@ -5,14 +5,14 @@ import 'package:workos/constants/constant.dart';
 
 import '../widgets/drawer_widget.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class OthersProfile extends StatefulWidget {
+  const OthersProfile({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<OthersProfile> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<OthersProfile> {
   var _titleTextStyle = TextStyle(
       fontSize: 22, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold);
   var _contentTextstyle = TextStyle(
@@ -120,39 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 30),
-                            child: MaterialButton(
-                              onPressed: (() {}),
-                              color: Constants.darkBlue,
-                              elevation: 8,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 14),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Logout",
-                                      style: TextStyle(
-                                          color: Colors.white70,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
-                                    ),
-                                    Icon(
-                                      Icons.logout,
-                                      color: Colors.white70,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
                       ]),
                 ),
               ),

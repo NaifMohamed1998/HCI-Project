@@ -34,11 +34,10 @@ class _UploadTaskState extends State<UploadTask> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 241, 210),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Constants.darkBlue),
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 255, 241, 210),
+        backgroundColor: Colors.white,
       ),
       drawer: DrawerWidget(),
       body: Padding(
@@ -100,7 +99,7 @@ class _UploadTaskState extends State<UploadTask> {
                     padding: const EdgeInsets.only(bottom: 30),
                     child: MaterialButton(
                       onPressed: _uploadTask,
-                      color: Colors.pink.shade700,
+                      color: Constants.darkBlue,
                       elevation: 8,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14)),
@@ -165,7 +164,7 @@ class _UploadTaskState extends State<UploadTask> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
               filled: true,
-              fillColor: Color.fromARGB(255, 255, 241, 210),
+              fillColor: Color.fromARGB(255, 122, 115, 115),
               enabledBorder: UnderlineInputBorder(
                   borderSide:
                       BorderSide(color: Color.fromARGB(255, 255, 241, 210))),
@@ -182,7 +181,7 @@ class _UploadTaskState extends State<UploadTask> {
       child: Text(
         label,
         style: TextStyle(
-            color: Colors.pink.shade800,
+            color: Constants.darkBlue,
             fontSize: 18,
             fontWeight: FontWeight.bold),
       ),
@@ -205,7 +204,7 @@ class _UploadTaskState extends State<UploadTask> {
           return AlertDialog(
             title: Text(
               'Task Category',
-              style: TextStyle(fontSize: 20, color: Colors.pink.shade800),
+              style: TextStyle(fontSize: 20, color: Constants.darkBlue),
             ),
             content: Container(
               width: size.width * 0.9,
@@ -225,7 +224,7 @@ class _UploadTaskState extends State<UploadTask> {
                         children: [
                           Icon(
                             Icons.check_circle_rounded,
-                            color: Colors.red.shade200,
+                            color: Colors.blueAccent,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),

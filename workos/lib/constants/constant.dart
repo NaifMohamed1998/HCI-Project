@@ -2,7 +2,6 @@ import 'dart:ui';
 
 class Constants {
   static Color darkBlue = Color(0xff00325A);
-  static Color button_icon_colour = Color(0x244AAA);
   static List<String> taskCategoryList = [
     "Bussiness",
     "Programming",
@@ -11,5 +10,15 @@ class Constants {
     "Marketing",
     "Design",
     "Accounting"
+  ];
+  static List<String> jobList = [
+    "Manager",
+    "Team Leader",
+    "Designer",
+    "Web designer",
+    "Full Stack Developer",
+    "Mobile Developer",
+    "Marketing",
+    "Digital Marketing"
   ];
 }

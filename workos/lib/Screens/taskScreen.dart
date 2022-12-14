@@ -60,7 +60,7 @@ class _TaskScreenState extends State<TaskScreen> {
           return AlertDialog(
             title: Text(
               'Task Category',
-              style: TextStyle(fontSize: 20, color: Colors.pink.shade800),
+              style: TextStyle(fontSize: 20, color: Constants.darkBlue),
             ),
             content: Container(
               width: size.width * 0.9,
@@ -74,7 +74,7 @@ class _TaskScreenState extends State<TaskScreen> {
                         children: [
                           Icon(
                             Icons.check_circle_rounded,
-                            color: Colors.red.shade200,
+                            color: Colors.blueAccent,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),

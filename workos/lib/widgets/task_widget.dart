@@ -45,7 +45,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               children: [
                 Icon(
                   Icons.linear_scale_outlined,
-                  color: Colors.pink.shade800,
+                  color: Constants.darkBlue,
                 ),
                 Text(
                   "subtitle /task description subtitle /task description subtitle /task description subtitle /task description subtitle /task description",
@@ -57,7 +57,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           trailing: Icon(
             Icons.keyboard_arrow_right,
             size: 30,
-            color: Colors.pink.shade800,
+            color: Constants.darkBlue,
           ),
         ));
   }
