@@ -100,23 +100,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _contactBy(
-                                color: Colors.green,
-                                fct: () {},
-                                icon: Icons.call_outlined),
-                            _contactBy(
-                                color: Colors.red,
-                                fct: () {},
-                                icon: Icons.mail_outline),
-                            _contactBy(
-                                color: Colors.purple,
-                                fct: () {},
-                                icon: Icons.call_outlined),
-                          ],
-                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -199,27 +182,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: _contentTextstyle,
         ),
       ],
-    );
-  }
-
-  Widget _contactBy(
-      {required Color color, required Function fct, required IconData icon}) {
-    return CircleAvatar(
-      backgroundColor: color,
-      radius: 25,
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 23,
-        child: IconButton(
-          onPressed: () {
-            fct();
-          },
-          icon: Icon(
-            icon,
-            color: color,
-          ),
-        ),
-      ),
     );
   }
 }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:workos/constants/constant.dart';
-import 'package:workos/inner_screens/TaskDetails.dart';
+import 'package:workos/inner_screens/OthersProfile.dart';
 
-class TaskWidget extends StatefulWidget {
+class AllWorkersWidget extends StatefulWidget {
   @override
-  _TaskWidgetState createState() => _TaskWidgetState();
+  _AllWorkersWidgetState createState() => _AllWorkersWidgetState();
 }
 
-class _TaskWidgetState extends State<TaskWidget> {
+class _AllWorkersWidgetState extends State<AllWorkersWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -18,12 +18,11 @@ class _TaskWidgetState extends State<TaskWidget> {
         child: ListTile(
           onTap: (() {
             Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskDetailsScreen(),
-              ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OthersProfile(),
+                ));
           }),
-          onLongPress: _deleteFunction,
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           leading: Container(
             padding: EdgeInsets.only(right: 12),
@@ -38,7 +37,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             ),
           ),
           title: Text(
-            "Title",
+            "Worker Name",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -55,43 +54,19 @@ class _TaskWidgetState extends State<TaskWidget> {
                   color: Constants.darkBlue,
                 ),
                 Text(
-                  "subtitle /task description subtitle /task description subtitle /task description subtitle /task description subtitle /task description",
+                  "Position /071111111",
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16),
                 ),
               ]),
-          trailing: Icon(
-            Icons.keyboard_arrow_right,
-            size: 30,
-            color: Constants.darkBlue,
+          trailing: IconButton(
+            icon: Icon(
+              Icons.mail_outline,
+              color: Colors.red,
+            ),
+            onPressed: () {},
           ),
         ));
-  }
-
-  void _deleteFunction() {
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            actions: [
-              TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      Text(
-                        "Delete",
-                        style: TextStyle(color: Colors.red),
-                      )
-                    ],
-                  ))
-            ],
-          );
-        });
   }
 }

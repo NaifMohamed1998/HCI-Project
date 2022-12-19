@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,9 +31,11 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
   FocusNode _positionFocusNode = FocusNode();
   FocusNode _phoneNumberFocusNode = FocusNode();
   File? imageFile;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _obscureText = true;
   final _loginFormkey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  String? imageUrl;
 
   @override
   void dispose() {
@@ -81,8 +84,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl:
-                "https://i.im.ge/2022/09/28/1EMHJ8.jc-gellidon-EH9f0TI5wco-unsplash.jpg",
+            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
 //                'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',
@@ -517,9 +519,10 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
+    // setState(() {
+    //   imageFile = File(pickedFile!.path);
+    // });
+    _cropImage(pickedFile!.path);
     Navigator.pop(context);
   }
 
@@ -529,12 +532,25 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-    setState(() {
-      imageFile = File(pickedFile!.path);
-    });
+    // setState(() {
+    //   imageFile = File(pickedFile!.path);
+    // });
+    _cropImage(pickedFile!.path);
 
     Navigator.pop(context);
   }
 
-  
+  void _cropImage(filePath) async {
+    CroppedFile? croppedImage = await ImageCropper.platform.cropImage(
+      sourcePath: filePath,
+      maxHeight: 1080,
+      maxWidth: 1080,
+    );
+    if (croppedImage != null) {
+      setState(() {
+        File imgTemp = File(croppedImage.path);
+        imageFile = imgTemp;
+      });
+    }
+  }
 }

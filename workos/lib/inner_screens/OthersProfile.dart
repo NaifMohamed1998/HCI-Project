@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:workos/constants/constant.dart';
 
 import '../widgets/drawer_widget.dart';
@@ -105,15 +107,21 @@ class _ProfileScreenState extends State<OthersProfile> {
                           children: [
                             _contactBy(
                                 color: Colors.green,
-                                fct: () {},
-                                icon: Icons.call_outlined),
+                                fct: () {
+                                  _openWhatsAppChat();
+                                },
+                                icon: Icons.whatsapp),
                             _contactBy(
                                 color: Colors.red,
-                                fct: () {},
+                                fct: () {
+                                  _mailTo();
+                                },
                                 icon: Icons.mail_outline),
                             _contactBy(
                                 color: Colors.purple,
-                                fct: () {},
+                                fct: () {
+                                  _callPhoneNumber();
+                                },
                                 icon: Icons.call_outlined),
                           ],
                         ),
@@ -188,5 +196,37 @@ class _ProfileScreenState extends State<OthersProfile> {
         ),
       ),
     );
+  }
+
+  void _openWhatsAppChat() async {
+    var url = 'https://wa.me/+94776671820?text=HelloWorld';
+    await launchUrlString(url);
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   print('Erorr');
+    //   throw 'Error occured';
+    // }
+  }
+
+  void _mailTo() async {
+    var mailUrl = 'mailto:naif07121998@gmail.com';
+    await launch(mailUrl);
+    // if (await canLaunch(mailUrl)) {
+    //   await launch(mailUrl);
+    // } else {
+    //   print('Erorr');
+    //   throw 'Error occured';
+    // }
+  }
+
+  void _callPhoneNumber() async {
+    var url = 'tel://+94776671820';
+    await launchUrlString(url);
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   throw 'Error occured';
+    // }
   }
 }

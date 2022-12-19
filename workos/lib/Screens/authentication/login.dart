@@ -61,8 +61,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl:
-                "https://i.im.ge/2022/09/28/1EMHJ8.jc-gellidon-EH9f0TI5wco-unsplash.jpg",
+            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
             //               'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',
@@ -86,17 +85,53 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   style: TextStyle(
                       color: Color.fromARGB(255, 255, 252, 252),
                       fontWeight: FontWeight.bold,
-                      fontSize: 30),
+                      fontSize: 30,
+                      shadows: [
+                        Shadow(
+                            // bottomLeft
+                            offset: Offset(-1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // bottomRight
+                            offset: Offset(1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topRight
+                            offset: Offset(1.5, 1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topLeft
+                            offset: Offset(-1.5, 1.5),
+                            color: Colors.black),
+                      ]),
                 ),
                 RichText(
                     text: TextSpan(children: [
                   TextSpan(
                       text: "Don't have an account?",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      )),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topRight
+                                offset: Offset(1.5, 1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-1.5, 1.5),
+                                color: Colors.black),
+                          ])),
                   TextSpan(text: "   "),
                   TextSpan(
                       recognizer: TapGestureRecognizer()
@@ -107,7 +142,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       text: "Register",
                       style: TextStyle(
                         decoration: TextDecoration.underline,
-                        color: Colors.blue.shade300,
+                        color: Constants.darkBlue,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ))
@@ -120,6 +155,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   child: Column(
                     children: [
                       TextFormField(
+                        
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_passwordFocusNode),
@@ -132,14 +168,17 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
+                        
                         style: TextStyle(color: Colors.white70),
                         decoration: InputDecoration(
+                          
                             hintText: 'Email',
                             hintStyle: TextStyle(color: Colors.white70),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white70)),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white70),
+                              
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
@@ -202,9 +241,10 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       }),
                       child: Text("Forget password?",
                           style: TextStyle(
-                              color: Colors.white70,
+                              color: Colors.white,
                               fontSize: 17,
                               decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.bold,
                               fontStyle: FontStyle.italic))),
                 ),
                 SizedBox(

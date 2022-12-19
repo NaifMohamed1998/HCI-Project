@@ -57,8 +57,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl:
-                "https://i.im.ge/2022/09/28/1EMHJ8.jc-gellidon-EH9f0TI5wco-unsplash.jpg",
+            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
 //                'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',

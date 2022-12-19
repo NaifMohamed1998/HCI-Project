@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color.fromARGB(255, 22, 27, 31),
         primarySwatch: Colors.blue,
       ),
-      home: TaskScreen(),
+      home: Login(),
     );
   }
 }

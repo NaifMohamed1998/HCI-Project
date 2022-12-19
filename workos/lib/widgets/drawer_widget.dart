@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:workos/Screens/AllWorkers.dart';
 import 'package:workos/Screens/taskScreen.dart';
 import 'package:workos/constants/constant.dart';
 import 'package:workos/inner_screens/profile.dart';
@@ -51,7 +52,13 @@ class DrawerWidget extends StatelessWidget {
                 builder: (context) => ProfileScreen(),
               ));
         }, Icons.settings_outlined),
-        _ListTiles("Registeed Workers", () {}, Icons.workspaces_outline),
+        _ListTiles("Registerd Workers", () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AllWorkers(),
+              ));
+        }, Icons.workspaces_outline),
         _ListTiles("Add Tasks", () {
           _addTaskFunction(context);
         }, Icons.add_task),
