@@ -5,8 +5,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:workos/services/global_methods.dart';
 import 'login.dart';
 import 'package:workos/constants/constant.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -71,9 +74,50 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _submitFormLogin() {
+  void _submitFormLogin() async {
     final isValid = _loginFormkey.currentState!.validate();
-    if (isValid) {}
+    if (isValid) {
+      if (imageFile == null) {
+        GlobalMethod.showErrorDialog(
+            error: 'Please pick an image', ctx: context);
+        return;
+      } else {
+        setState(() {
+          _isLoading = true;
+        });
+        try {
+          await _auth.createUserWithEmailAndPassword(
+              email: _emailtextTextController.text.trim().toLowerCase(),
+              password: _passtextTextController.text.trim());
+          final User? user = _auth.currentUser;
+          final _uid = user!.uid;
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('userImages')
+              .child(_uid + '.jpg');
+          await ref.putFile(imageFile!);
+          imageUrl = await ref.getDownloadURL();
+          FirebaseFirestore.instance.collection('users').doc(_uid).set({
+            'id': _uid,
+            'name': _fullNametextTextController.text,
+            'email': _emailtextTextController.text,
+            'userImage': imageUrl,
+            'phoneNumber': __phoneNumberTextController.text,
+            'positionInCompany': _positiontextTextController.text,
+            'createdAt': Timestamp.now(),
+          });
+          Navigator.canPop(context) ? Navigator.pop(context) : null;
+        } catch (errorrr) {
+          setState(() {
+            _isLoading = false;
+          });
+          GlobalMethod.showErrorDialog(error: errorrr.toString(), ctx: context);
+        }
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -84,7 +128,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
+            imageUrl: "https://i.im.ge/2022/12/20/qT5Lb4.BG2.jpg",
 //                'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',
@@ -108,17 +152,52 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 30),
+                      fontSize: 40,
+                      shadows: [
+                        Shadow(
+                            // bottomLeft
+                            offset: Offset(-1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // bottomRight
+                            offset: Offset(1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topRight
+                            offset: Offset(1.5, 1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topLeft
+                            offset: Offset(-1.5, 1.5),
+                            color: Colors.black),
+                      ]),
                 ),
                 RichText(
                     text: TextSpan(children: [
                   TextSpan(
                       text: " Already have an account?",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      )),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topRight
+                                offset: Offset(1.5, 1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-1.5, 1.5),
+                                color: Colors.black),
+                          ])),
                   TextSpan(text: "   "),
                   TextSpan(
                       recognizer: TapGestureRecognizer()
@@ -126,11 +205,29 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             MaterialPageRoute(builder: (context) => Login())),
                       text: "Login",
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Colors.blue.shade300,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ))
+                          decoration: TextDecoration.underline,
+                          color: Constants.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topRight
+                                offset: Offset(1.5, 1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-1.5, 1.5),
+                                color: Colors.black),
+                          ]))
                 ])),
                 SizedBox(
                   height: 40,
@@ -156,10 +253,14 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                   return null;
                                 }
                               }),
-                              style: TextStyle(color: Colors.white70),
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold),
                               decoration: InputDecoration(
                                   hintText: 'Full Name',
-                                  hintStyle: TextStyle(color: Colors.white70),
+                                  hintStyle: TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold),
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.white70)),
@@ -169,7 +270,9 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                   ),
                                   errorBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.red),
-                                  )),
+                                  ),
+                                  filled: true,
+                                  fillColor: Color.fromRGBO(192, 192, 192, 1)),
                             ),
                           ),
                           Stack(
@@ -187,7 +290,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                     borderRadius: BorderRadius.circular(16),
                                     child: imageFile == null
                                         ? Image.network(
-                                            'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
+                                            'https://i.im.ge/2022/12/20/qTwbn6.istockphoto-1337144146-170667a.jpg',
                                             fit: BoxFit.fill,
                                           )
                                         : Image.file(
@@ -206,7 +309,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.pink,
+                                        color: Constants.darkBlue,
                                         border: Border.all(
                                             width: 2, color: Colors.white),
                                         shape: BoxShape.circle),
@@ -241,10 +344,13 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                             hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white70)),
                             focusedBorder: UnderlineInputBorder(
@@ -252,7 +358,9 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
-                            )),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromRGBO(192, 192, 192, 1)),
                       ),
                       SizedBox(
                         height: 15,
@@ -272,7 +380,8 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                             suffixIcon: GestureDetector(
                               onTap: (() {
@@ -282,11 +391,13 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                 _obscureText
                                     ? Icons.visibility
                                     : Icons.visibility_off,
-                                color: Colors.white70,
+                                color: Colors.black54,
                               ),
                             ),
                             hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white70)),
                             focusedBorder: UnderlineInputBorder(
@@ -294,7 +405,9 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
-                            )),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromRGBO(192, 192, 192, 1)),
                       ),
                       SizedBox(
                         height: 15,
@@ -317,10 +430,14 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                               return null;
                             }
                           }),
-                          style: TextStyle(color: Colors.white70),
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
                               hintText: 'Company Position',
-                              hintStyle: TextStyle(color: Colors.white70),
+                              hintStyle: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold),
                               enabledBorder: UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.white70)),
@@ -332,7 +449,9 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                                       BorderSide(color: Colors.white70)),
                               errorBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.red),
-                              )),
+                              ),
+                              filled: true,
+                              fillColor: Color.fromRGBO(192, 192, 192, 1)),
                         ),
                       ),
                       SizedBox(
@@ -351,10 +470,13 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                             hintText: 'Phone Number',
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white70)),
                             focusedBorder: UnderlineInputBorder(
@@ -362,7 +484,9 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
-                            )),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromRGBO(192, 192, 192, 1)),
                       ),
                     ],
                   ),
@@ -370,32 +494,40 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                 SizedBox(
                   height: 80,
                 ),
-                MaterialButton(
-                  onPressed: _submitFormLogin,
-                  color: Constants.darkBlue,
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Signup",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                _isLoading
+                    ? Center(
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          child: CircularProgressIndicator(),
                         ),
-                        Icon(
-                          Icons.person_add,
-                          color: Colors.white70,
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                      )
+                    : MaterialButton(
+                        onPressed: _submitFormLogin,
+                        color: Constants.darkBlue,
+                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Signup",
+                                style: TextStyle(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                              Icon(
+                                Icons.person_add,
+                                color: Colors.white70,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
               ],
             ),
           )
@@ -411,7 +543,7 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
           return AlertDialog(
             title: Text(
               'Choose Your Job',
-              style: TextStyle(fontSize: 20, color: Colors.pink.shade800),
+              style: TextStyle(fontSize: 20, color: Constants.darkBlue),
             ),
             content: Container(
               width: size.width * 0.9,
@@ -431,14 +563,16 @@ class _RegisterState extends State<Register> with TickerProviderStateMixin {
                         children: [
                           Icon(
                             Icons.check_circle_rounded,
-                            color: Colors.red.shade200,
+                            color: Colors.lightBlue,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               Constants.jobList[index],
                               style: TextStyle(
-                                  fontSize: 18, fontStyle: FontStyle.italic),
+                                  fontSize: 18,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.lightBlue),
                             ),
                           )
                         ],

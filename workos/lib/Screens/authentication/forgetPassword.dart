@@ -57,7 +57,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
+            imageUrl: "https://i.im.ge/2022/12/20/qT5Lb4.BG2.jpg",
 //                'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',
@@ -81,7 +81,25 @@ class _ForgetPasswordState extends State<ForgetPassword>
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 30),
+                      fontSize: 40,
+                      shadows: [
+                        Shadow(
+                            // bottomLeft
+                            offset: Offset(-1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // bottomRight
+                            offset: Offset(1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topRight
+                            offset: Offset(1.5, 1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topLeft
+                            offset: Offset(-1.5, 1.5),
+                            color: Colors.black),
+                      ]),
                 ),
                 SizedBox(
                   height: 40,
@@ -89,9 +107,27 @@ class _ForgetPasswordState extends State<ForgetPassword>
                 Text(
                   "Email Address",
                   style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 20,
+                      shadows: [
+                        Shadow(
+                            // bottomLeft
+                            offset: Offset(-1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // bottomRight
+                            offset: Offset(1.5, -1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topRight
+                            offset: Offset(1.5, 1.5),
+                            color: Colors.black),
+                        Shadow(
+                            // topLeft
+                            offset: Offset(-1.5, 1.5),
+                            color: Colors.black),
+                      ]),
                 ),
                 SizedBox(
                   height: 15,

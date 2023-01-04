@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:workos/Screens/AllWorkers.dart';
 import 'package:workos/Screens/taskScreen.dart';
 import 'package:workos/constants/constant.dart';
+import 'package:workos/inner_screens/OthersProfile.dart';
 import 'package:workos/inner_screens/profile.dart';
 import 'package:workos/inner_screens/upload_task.dart';
+import 'package:workos/user_state.dart';
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -13,13 +16,14 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       child: ListView(children: [
         DrawerHeader(
-            decoration: BoxDecoration(color: Colors.black),
+            decoration: BoxDecoration(color: Color.fromRGBO(36, 74, 140, 0.9)),
             child: Column(
               children: [
                 Flexible(
-                    flex: 1,
-                    child: Image.network(
-                        'https://i.im.ge/2022/10/01/1gnxvp.wall-clock.png')),
+                  flex: 4,
+                  child: Image.network(
+                      'https://i.im.ge/2022/12/20/qTvP9L.Pngtreework-from-home-with-girl-5392465.png'),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -39,28 +43,16 @@ class DrawerWidget extends StatelessWidget {
           height: 30,
         ),
         _ListTiles("All Tasks", () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskScreen(),
-              ));
+          _navigateToAllTasksScreen(context);
         }, Icons.task_outlined),
         _ListTiles("My Account", () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProfileScreen(),
-              ));
+          _navigateToProfileScreen(context);
         }, Icons.settings_outlined),
         _ListTiles("Registerd Workers", () {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AllWorkers(),
-              ));
+          _navigateToAllWorkersScreen(context);
         }, Icons.workspaces_outline),
         _ListTiles("Add Tasks", () {
-          _addTaskFunction(context);
+          _navigateToAddTaskScreen(context);
         }, Icons.add_task),
         Divider(
           thickness: 1,
@@ -93,6 +85,7 @@ class DrawerWidget extends StatelessWidget {
   }
 
   void _logout(context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     showDialog(
         context: context,
         builder: (context) {
@@ -130,7 +123,16 @@ class DrawerWidget extends StatelessWidget {
                 child: Text('No'),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _auth.signOut();
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserState(),
+                    ),
+                  );
+                },
                 child: Text(
                   'Yes',
                   style: TextStyle(color: Colors.red),
@@ -141,8 +143,44 @@ class DrawerWidget extends StatelessWidget {
         });
   }
 
-  void _addTaskFunction(BuildContext context) {
+  void _navigateToProfileScreen(context) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
+    final String uid = user!.uid;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OthersProfile(
+          userID: uid,
+        ),
+      ),
+    );
+  }
+
+  void _navigateToAllWorkersScreen(context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AllWorkers(),
+      ),
+    );
+  }
+
+  void _navigateToAllTasksScreen(context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TaskScreen(),
+      ),
+    );
+  }
+
+  void _navigateToAddTaskScreen(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => UploadTask()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => UploadTask(),
+      ),
+    );
   }
 }

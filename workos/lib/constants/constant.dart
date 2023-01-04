@@ -12,6 +12,10 @@ class Constants {
     "Design",
     "Accounting"
   ];
+  static List<String> filterList = [
+    "Managing Tasks",
+    "Working Tasks",
+  ];
   static List<String> jobList = [
     "Manager",
     "Team Leader",

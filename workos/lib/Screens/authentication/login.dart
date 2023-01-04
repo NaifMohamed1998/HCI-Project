@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:workos/services/global_methods.dart';
 import 'register.dart';
 import 'forgetPassword.dart';
 import 'package:workos/constants/constant.dart';
@@ -20,6 +22,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
   bool _obscureText = true;
   final _loginFormkey = GlobalKey<FormState>();
   FocusNode _passwordFocusNode = FocusNode();
+  bool _isLoading = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -48,9 +52,27 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void _submitFormLogin() {
+  void _submitFormLogin() async {
     final isValid = _loginFormkey.currentState!.validate();
-    if (isValid) {}
+    if (isValid) {
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await _auth.signInWithEmailAndPassword(
+            email: _emailtextTextController.text.trim().toLowerCase(),
+            password: _passtextTextController.text.trim());
+        Navigator.canPop(context) ? Navigator.pop(context) : null;
+      } catch (errorrr) {
+        setState(() {
+          _isLoading = false;
+        });
+        GlobalMethod.showErrorDialog(error: errorrr.toString(), ctx: context);
+      }
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -61,7 +83,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
       body: Stack(
         children: [
           CachedNetworkImage(
-            imageUrl: "https://i.im.ge/2022/12/18/dn93O6.BACKGROUND1.jpg",
+            imageUrl: "https://i.im.ge/2022/12/20/qT5Lb4.BG2.jpg",
             //               'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg',
             placeholder: (context, url) => Image.asset(
               'assets/images/pexels-josh-hild-3573433.jpg',
@@ -85,7 +107,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   style: TextStyle(
                       color: Color.fromARGB(255, 255, 252, 252),
                       fontWeight: FontWeight.bold,
-                      fontSize: 30,
+                      fontSize: 40,
                       shadows: [
                         Shadow(
                             // bottomLeft
@@ -112,8 +134,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          
-                          fontSize: 16,
+                          fontSize: 20,
                           shadows: [
                             Shadow(
                                 // bottomLeft
@@ -141,11 +162,28 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                 builder: (context) => Register())),
                       text: "Register",
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Constants.darkBlue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ))
+                          decoration: TextDecoration.underline,
+                          color: Constants.darkBlue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(1.5, -1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topRight
+                                offset: Offset(1.5, 1.5),
+                                color: Colors.black),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-1.5, 1.5),
+                                color: Colors.black),
+                          ]))
                 ])),
                 SizedBox(
                   height: 40,
@@ -155,7 +193,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   child: Column(
                     children: [
                       TextFormField(
-                        
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => FocusScope.of(context)
                             .requestFocus(_passwordFocusNode),
@@ -168,21 +205,22 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
-                        
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(color: Colors.black54),
                         decoration: InputDecoration(
-                          
                             hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white70),
+                            hintStyle: TextStyle(
+                                color: Colors.black54,
+                                fontWeight: FontWeight.bold),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white70)),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white70),
-                              
                             ),
                             errorBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
-                            )),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromRGBO(192, 192, 192, 0.75)),
                       ),
                       SizedBox(
                         height: 20,
@@ -200,29 +238,35 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             return null;
                           }
                         }),
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(
+                            color: Colors.black38, fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
-                            suffixIcon: GestureDetector(
-                              onTap: (() {
-                                _obscureText = !_obscureText;
-                              }),
-                              child: Icon(
-                                _obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.white70,
-                              ),
+                          suffixIcon: GestureDetector(
+                            onTap: (() {
+                              _obscureText = !_obscureText;
+                            }),
+                            child: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black54,
                             ),
-                            hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.white70),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white70)),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white70),
-                            ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            )),
+                          ),
+                          hintText: 'Password',
+                          hintStyle: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white70)),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white70),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          filled: true,
+                          fillColor: Color.fromRGBO(192, 192, 192, 1),
+                        ),
                       ),
                     ],
                   ),

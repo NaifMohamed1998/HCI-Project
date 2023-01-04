@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:workos/constants/constant.dart';
 import 'package:workos/inner_screens/OthersProfile.dart';
 
 class AllWorkersWidget extends StatefulWidget {
+  final String userID;
+  final String userName;
+  final String userEmail;
+  final String positionInCompany;
+  final String phoneNumber;
+  final String userImageUrl;
+
+  const AllWorkersWidget(
+      {required this.userID,
+      required this.userName,
+      required this.userEmail,
+      required this.positionInCompany,
+      required this.phoneNumber,
+      required this.userImageUrl});
   @override
   _AllWorkersWidgetState createState() => _AllWorkersWidgetState();
 }
@@ -13,6 +29,7 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+        color: Color.fromRGBO(255, 255, 255, 0.75),
         elevation: 8,
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: ListTile(
@@ -20,7 +37,9 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => OthersProfile(),
+                  builder: (context) => OthersProfile(
+                    userID: widget.userID,
+                  ),
                 ));
           }),
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -32,12 +51,13 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
             child: CircleAvatar(
               backgroundColor: Colors.transparent,
               radius: 20, //https://i.im.ge/2022/10/01/1gnxvp.wall-clock.png
-              child: Image.network(
-                  "https://i.im.ge/2022/10/01/1gJKpX.check-mark.png"),
+              child: Image.network(widget.userImageUrl == null
+                  ? 'https://cdn.icon-icons.com/icons2/2643/PNG/512/male_boy_person_people_avatar_icon_159358.png'
+                  : widget.userImageUrl),
             ),
           ),
           title: Text(
-            "Worker Name",
+            widget.userName,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
@@ -54,7 +74,7 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
                   color: Constants.darkBlue,
                 ),
                 Text(
-                  "Position /071111111",
+                  '${widget.positionInCompany}/${widget.phoneNumber}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 16),
@@ -65,8 +85,20 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
               Icons.mail_outline,
               color: Colors.red,
             ),
-            onPressed: () {},
+            onPressed: _mailTo,
           ),
         ));
+  }
+
+  void _mailTo() async {
+    var mailUrl = 'mailto:${widget.userEmail}';
+    // print('widget.userEmail ${widget.userEmail}');
+    await launchUrlString(mailUrl);
+    // if (await canLaunchUrlString(mailUrl)) {
+    //   await launchUrlString(mailUrl);
+    // } else {
+    //   print('Erorr');
+    //   throw 'Error occured';
+    // }
   }
 }

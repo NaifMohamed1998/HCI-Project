@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:workos/inner_screens/OthersProfile.dart';
 
 class CommentWidget extends StatefulWidget {
+  final String commentId;
+  final String commenterId;
+  final String commenterName;
+  final String commentBody;
+  final String commenterImageUrl;
+
+  const CommentWidget(
+      {required this.commentId,
+      required this.commenterId,
+      required this.commenterName,
+      required this.commentBody,
+      required this.commenterImageUrl});
   @override
   _CommentWidgetState createState() => _CommentWidgetState();
 }
@@ -20,7 +33,16 @@ class _CommentWidgetState extends State<CommentWidget> {
   Widget build(BuildContext context) {
     _colors.shuffle();
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OthersProfile(
+              userID: widget.commenterId,
+            ),
+          ),
+        );
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,8 +59,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                 ),
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(
-                        'https://i.im.ge/2022/09/15/1lWDgp.window-office-at-night-1508827.jpg'),
+                    image: NetworkImage(widget.commenterImageUrl),
                     fit: BoxFit.fill),
               ),
             ),
@@ -52,14 +73,14 @@ class _CommentWidgetState extends State<CommentWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'commenterName',
+                    widget.commenterName,
                     style: TextStyle(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),
                   Text(
-                    'commentBody',
+                    widget.commentBody,
                     style: TextStyle(
                       color: Colors.grey.shade700,
                       fontStyle: FontStyle.italic,
